@@ -10,6 +10,7 @@ const app: Express = express();
 app.use(cors({ origin: '*' }));
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ extended: true }));
+app.options('*', cors());
 
 app.use('/get', getRouter);
 app.use('/post', postRouter);
