@@ -2,13 +2,14 @@ import cors from 'cors';
 import express from 'express';
 import { getAllUsers, getNoteSections, getPage, getSectionPages, getUserNotes, getUserWithNote, routeAuth } from '../controller/get';
 import userAuthMiddleWare from '../middleware/userId';
+import bodyParser from 'body-parser';
 
 export const getRouter = express.Router();
 
 getRouter.use(cors({ origin: '*' }));
 
-getRouter.use(express.json({ limit: '500mb' }));
-getRouter.use(express.urlencoded({ extended: true }));
+getRouter.use(bodyParser.json({ limit: '500mb' }));
+getRouter.use(bodyParser.urlencoded({ extended: true }));
 
 getRouter.get('/users', getAllUsers);
 getRouter.get('/userwithnote', userAuthMiddleWare, getUserWithNote);
