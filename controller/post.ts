@@ -58,6 +58,7 @@ export const createANewSection = async function (req: Request, res: Response) {
 //:LOGIN
 export const authenticateUser = async function (req: Request, res: Response) {
    const { email, password } = req.body;
+   console.log(email, password);
    let userHasAccount, token;
    if (email && password) {
       userHasAccount = await prisma.user.findUnique({
@@ -67,6 +68,7 @@ export const authenticateUser = async function (req: Request, res: Response) {
          },
       });
       token = JWT(userHasAccount?.id || '');
+      console.log(userHasAccount, token);
    }
    if (userHasAccount) res.status(200).json({ success: true, info: userHasAccount, token });
    else res.status(400).json({ success: false, msg: 'Bad request' });
