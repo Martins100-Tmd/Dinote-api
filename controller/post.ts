@@ -67,7 +67,6 @@ export const authenticateUser = async function (req: Request, res: Response) {
       isUserExist = await prisma.user.findUnique({ where: { email } });
       const { password, iv, tag, id, ...rest }: any = isUserExist;
       const plainPassword = isUserExist ? decryptUserPassword(process.env.CRYPTO_KEY!, password, iv, tag) : '';
-      console.log(plainPassword, reqPassword);
       token = plainPassword == reqPassword ? JWT(id || '') : '';
    }
    if (isUserExist) res.status(200).json({ success: true, info: isUserExist, token });
