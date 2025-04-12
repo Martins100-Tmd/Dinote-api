@@ -69,8 +69,17 @@ export const authenticateUser = async function (req: Request, res: Response) {
       const plainPassword = isUserExist ? decryptUserPassword(process.env.CRYPTO_KEY!, password, iv, tag) : '';
       token = plainPassword == reqPassword ? JWT(id || '') : '';
    }
-   if (isUserExist) res.status(200).json({ success: true, info: isUserExist, token });
-   else res.status(400).json({ success: false, msg: 'Bad request' });
+   if (isUserExist) {
+      const constantNote = await prisma.note.create({
+         data: {
+            title: '~',
+            color: '#000',
+            userId: isUserExist.id,
+         },
+      });
+      if (constantNote) res.status(200).json({ success: true, info: isUserExist, token, msg: 'folder' });
+      else res.status(200).json({ success: true, info: isUserExist, token });
+   } else res.status(400).json({ success: false, msg: 'Bad request' });
 };
 
 //:PAGE
